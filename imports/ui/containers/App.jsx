@@ -15,9 +15,15 @@ class App extends Component{
 		};
 	}
 
-	buscar(text){
+	buscar(text, type){
 		texto = "/search/" + text;
 		this.props.history.push(texto);
+		let access_token = Meteor.user()?Meteor.user().services.facebook.accessToken:null;
+		Meteor.call("FacebookRequestSearch",{query:text, type:type, access_token:access_token},(err, response)=>{
+			if(err) throw err;
+			console.log(response);
+		});
+
 	}
 
 	render(){
@@ -31,7 +37,7 @@ class App extends Component{
 					<Redirect exact from="/" to="/inicio"></Redirect>
 				    <Route path='/inicio' render={(routeProps)=>
 				    	<Principal {...routeProps}
-				    	buscar = {(text)=>{this.buscar(text)}}/>
+				    	buscar = {(text, type)=>{this.buscar(text, type)}}/>
 				    }/>
 				    <Route path="/search" component={Search}/>
 				    <Route path="*" component={NotFound}></Route>

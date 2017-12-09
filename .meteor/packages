@@ -23,3 +23,5 @@ react-meteor-data
 accounts-ui
 accounts-facebook
 facebook-config-ui
+http
+check
