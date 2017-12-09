@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
 
+import Inicio from "../components/Inicio.jsx";
 import Principal from "../components/Principal.jsx";
 import Search from "../components/Search.jsx";
 import AccountsUIWrapper from "../components/AccountsUIWrapper.jsx";
@@ -29,7 +30,8 @@ class App extends Component{
 				</div>
 				<Switch>
 					<Redirect exact from="/" to="/inicio"></Redirect>
-				    <Route path='/inicio' render={(routeProps)=>
+				    <Route path="/inicio" component={Inicio}/>					
+				    <Route path='/dashboard' render={(routeProps)=>
 				    	<Principal {...routeProps}
 				    	buscar = {(text)=>{this.buscar(text)}}/>
 				    }/>
