@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
 
 import Principal from "../components/Principal.jsx";
+import Profile from "../components/Profile.jsx";
 import Search from "../components/Search.jsx";
 import AccountsUIWrapper from "../components/AccountsUIWrapper.jsx";
 import NotFound from "../components/NotFound.jsx";
+
 
 class App extends Component{
 	constructor(props){
@@ -25,6 +27,20 @@ class App extends Component{
 		});
 
 	}
+	actualizar(nick, pass, agregar){
+		if(agregar){
+			console.log("se debe meter en el user de " + nick);
+			Meteor.call("users.updateAccount", nick, pass);
+		}
+		else{
+			console.log("nuevo user " + nick);
+			Meteor.call("users.insertar", nick, pass);
+		}
+		this.props.history.push("/inicio");
+	}
+	verPerfil(){
+		this.props.history.push("/profile");
+	}
 
 	render(){
 		console.log(Meteor.user());
@@ -32,6 +48,7 @@ class App extends Component{
 			<div className="App">
 				<div>
 					<AccountsUIWrapper/>
+					<button onClick={()=>this.verPerfil()}> Perfil </button>
 				</div>
 				<Switch>
 					<Redirect exact from="/" to="/inicio"></Redirect>
@@ -40,6 +57,13 @@ class App extends Component{
 				    	buscar = {(text, type)=>{this.buscar(text, type)}}/>
 				    }/>
 				    <Route path="/search" component={Search}/>
+				    {Meteor.user()?
+
+				    	<Route path='/profile' render={(routeProps)=>
+				    	<Profile {...routeProps}
+				    	actualizar = {(nick, pass, agregar)=>{this.actualizar(nick, pass, agregar)}}/>
+				   	 	}/>
+					:null}
 				    <Route path="*" component={NotFound}></Route>
     			</Switch>
 			</div>
