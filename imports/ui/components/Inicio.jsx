@@ -9,102 +9,106 @@ class Inicio extends Component{
 
 	constructor(props){
 		super(props);
-		console.log(props);
+        this.state={
+            root:{},
+            force:{}
+        };
 	}
 
     componentDidMount(){
-        this.forceUpdate(); 
-        var force;
+        this.draw();		
 	}
 
-	componentWillUpdate(newProps){
-		this.redraw();
-		console.log("redrawing");
+	componentWillUpdate(){
+        this.force.resume();	
 	}
     
-    redraw(){
+    draw(){
 
-var nodes = d3.range(200).map(function() { return {radius: Math.random() * 12 + 4}; }),
-    root = nodes[0],color = d3.scale.category10();
+        var nodes = d3.range(200).map(function() { return {radius: Math.random() * 12 + 4}; });
+        var r = nodes[0];
 
-root.radius = 0;
-root.fixed = true;
+        r.radius = 0;
+        r.fixed = true;
 
-    this.force = d3.layout.force()
-    .gravity(0.05)
-    .charge(function(d, i) { return i ? 0 : -2000; })
-    .nodes(nodes)
-    .size([500, 500]);
+        this.setState({root:r});
 
-this.force.start();
+        this.force = d3.layout.force()
+          .gravity(0.05)
+          .charge(function(d, i) { return i ? 0 : -2000; })
+          .nodes(nodes)
+          .size([700, 400]);
 
+        this.force.start();
 
-var context = this.canvas.getContext("2d");
+        var context = this.canvas.getContext("2d");
 
-this.force.on("tick", function(e) {
-  var q = d3.geom.quadtree(nodes),
-      i,
-      d,
-      n = nodes.length;
+        this.force.on("tick", function(e) {
+            var q = d3.geom.quadtree(nodes), i, d, n = nodes.length;
+            for (i = 1; i < n; ++i) q.visit(collide(nodes[i]));
 
-  for (i = 1; i < n; ++i) q.visit(collide(nodes[i]));
+            context.clearRect(0, 0, 700, 400);
+            context.beginPath();
 
-  context.clearRect(0, 0, 500, 500);
-  context.fillStyle = "steelblue";
-  context.beginPath();
-  for (i = 1; i < n; ++i) {
-    d = nodes[i];
-    context.moveTo(d.x, d.y);
-    context.arc(d.x, d.y, d.radius, 0, 2 * Math.PI);
-  }
-  context.fill();
-});
+            context.fillStyle = "#ff0000";    
 
-function collide(node) {
-  var r = node.radius + 16,
-      nx1 = node.x - r,
-      nx2 = node.x + r,
-      ny1 = node.y - r,
-      ny2 = node.y + r;
-  return function(quad, x1, y1, x2, y2) {
-    if (quad.point && (quad.point !== node)) {
-      var x = node.x - quad.point.x,
-          y = node.y - quad.point.y,
-          l = Math.sqrt(x * x + y * y),
-          r = node.radius + quad.point.radius;
-      if (l < r) {
-        l = (l - r) / l * .5;
-        node.x -= x *= l;
-        node.y -= y *= l;
-        quad.point.x += x;
-        quad.point.y += y;
-      }
+            for (i = 1; i < n; ++i) {
+                d = nodes[i];
+                context.moveTo(d.x, d.y);            
+                context.arc(d.x, d.y, d.radius, 0, 2 * Math.PI);
+            }
+            context.fill();
+        });
+
+            function collide(node) {
+            var r = node.radius + 16,
+            nx1 = node.x - r,
+            nx2 = node.x + r,
+            ny1 = node.y - r,
+            ny2 = node.y + r;
+            return function(quad, x1, y1, x2, y2) {
+                if (quad.point && (quad.point !== node)) {
+                    var x = node.x - quad.point.x,
+                    y = node.y - quad.point.y,
+                    l = Math.sqrt(x * x + y * y),
+                    r = node.radius + quad.point.radius;
+                    if (l < r) {
+                        l = (l - r) / l * .5;
+                        node.x -= x *= l;
+                        node.y -= y *= l;
+                        quad.point.x += x;
+                        quad.point.y += y;
+                    }
+                }
+                return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            };
+        }            
     }
-    return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-  };
-}
-    }
 
-mouseMove(){
-  var p1 = d3.mouse(this);
-  root.px = p1[0];
-  root.py = p1[1];
-  this.force.resume();
-};    
-
+    mouseMove = (e) => {
+        var temporal = this.state.root;
+        temporal.px =  e.pageX;
+        temporal.py = e.pageY;
+        this.setState({
+            root:temporal
+        });
+    };    
 
 	render(){
 		return (
-			<div id="Inicio">
-			    <h1>Info-Centralizer</h1>
-			    <p>this is an application that allows you to bla bla</p>
-			    <canvas 
-                    width="500" 
-                    height="500"
+			<div id="Inicio" onMouseMove={this.mouseMove}>
+			    <canvas id="graficaInicio"
+                    width="700" 
+                    height="400"
 				    ref={(c)=>this.canvas=c}
-				    onMouseMove={this.mouseMove}
-			    >
-			    </canvas>
+			    >	    
+			    </canvas>	
+			    <div id="InfoInicio">
+			        <h1>INFO-CENTRALIZER</h1>
+			        <p>This is an application that allows you to compare the results of the same search on different social networks. </p>
+			        <p>To begin click next</p>	
+			        <a href="/dashboard">Next</a>
+			    </div>					    	    
 			</div>
 		);
 	}
