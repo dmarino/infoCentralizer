@@ -19,27 +19,35 @@ class App extends Component{
 
 	buscar(text, type){
 		texto = "/search/" + text;
-		this.props.history.push(texto);
-		let access_token = Meteor.user()?Meteor.user().services.facebook.accessToken:null;
-		Meteor.call("FacebookRequestSearch",{query:text, type:type, access_token:access_token},(err, response)=>{
-			if(err) throw err;
-			console.log(response);
-		});
-
+		if(this.props.location.pathname !== texto){
+			this.props.history.push(texto);
+			let access_token = Meteor.user()?Meteor.user().services.facebook.accessToken:null;
+			Meteor.call("FacebookRequestSearch",{query:text, type:type, access_token:access_token},(err, response)=>{
+				if(err) throw err;
+				console.log(response);
+			});
+		}
 	}
 	actualizar(nick, pass, agregar){
 		if(agregar){
 			console.log("se debe meter en el user de " + nick);
-			Meteor.call("users.updateAccount", nick, pass);
+			Meteor.call("users.updateAccount", nick, pass, (resp, err)=>{
+				if(err) 
+					alert("No existe un usuario con ese login");
+			});
 		}
 		else{
 			console.log("nuevo user " + nick);
-			Meteor.call("users.insertar", nick, pass);
+			Meteor.call("users.insertar", nick, pass, (resp, err)=>{
+				if(err)
+					alert("Ya existe un usuario con ese login");
+			});
 		}
 		this.props.history.push("/inicio");
 	}
 	verPerfil(){
-		this.props.history.push("/profile");
+		if(this.props.location.pathname!== "/profile")
+			this.props.history.push("/profile");
 	}
 
 	render(){

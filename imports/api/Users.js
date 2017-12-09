@@ -13,10 +13,18 @@ Meteor.methods({
 		check(nick,String);
 		check(pass,String);
 
+		let trouble = Meteor.users.findOne({
+			"profile.nick":nick
+		});
+
+		if(trouble)
+			return -1;
+
 		Meteor.users.update(Meteor.userId(), {
 			$set:{"profile.nick":nick,
 				  "profile.pass":pass}
 		});
+		return 1;
 	},
 
 	"users.updateAccount"(nick, pass){
@@ -37,11 +45,13 @@ Meteor.methods({
 				services.twitter = (actual.services.twitter);
 			Meteor.users.remove(actual._id);
 			Meteor.users.update(Meteor.userId(),{
-				$set:{"services":services}
-			})
+				$set:{"services":services,
+					  "profile":actual.profile}
+			});
+			return 1;
 		}
 		else
-			throw new Meteor.Error("Usuario inexistente");
+			return -1;
 
 	},
 
