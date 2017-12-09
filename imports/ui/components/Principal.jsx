@@ -23,9 +23,10 @@ class Principal extends Component{
 	render(){
 		return (
 			<div id="Principal">
-				<div>
+	            <div>
 					<AccountsUIWrapper/>
-				</div>			
+					<button onClick={()=>this.props.verPerfil()}> Perfil </button>
+				</div>		
 		        <p>Hola! Soy el componente principal :3</p>
 		        <span>Digite lo que quiere buscar</span>
 		        <br/>
