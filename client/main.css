@@ -79,9 +79,11 @@ a:hover{
   width: 99%;
   height: 5%;  
   text-align: right;
+  position: fixed;
   padding: 0.5%;
   padding-right: 2%;
   background-color: rgba(255,255,255,0.7);
+  z-index: 99999;
 }
 
 .menu img{
@@ -102,8 +104,8 @@ a:hover{
   position: fixed;
   width: 7%;
   text-align: left;
-  right: 3%;
-  top: 7%;
+  right: 2%;
+  top: 6.6%;
   background-color: rgba(255,255,255,0.7);
 }
 
@@ -117,11 +119,29 @@ a:hover{
 }
 
 
+.subMenuItem #login-buttons{
+  background-color: rgba(255,255,255,0.7)!important; 
+  position: fixed;
+  padding: 0.5%;
+  padding-top: 0.4%;
+  right: 9%;
+  text-decoration: none;
+}
+
+.subMenuItem #login-dropdown-list{
+  background-color: rgba(255,255,255,0.7);    
+  position: fixed !important;
+  right: 10% !important;
+  left: 70% !important;
+  top: 11%;  
+}
+
+
 /*grids*/
 .grid{
   display: inline-block; 
   margin-left: 1%;
-  margin-top: 2%;    
+  margin-top: 7%;    
   border-radius: 25px;
   padding: 1%;
 }

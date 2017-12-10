@@ -20,23 +20,59 @@ class App extends Component{
 	}
 
 	componentDidMount(){
-		if(this.props.usuario !== this.state.usuario){
+		if(Meteor.user() !== this.state.usuario){
 			this.setState({
-				usuario:this.props.usuario
-			})
+				usuario:Meteor.user()
+			});
 		}
 	}
 
-	buscar(text, type){
+	buscar(text, type, latitud, longitud, radius){
 		texto = "/search/" + text;
 		if(this.props.location.pathname !== texto){
 			this.props.history.push(texto);
-			let access_token = Meteor.user() ? Meteor.user().services.facebook.accessToken:null;
-			Meteor.call("FacebookRequestSearch",{query:text, type:type, access_token:access_token},(err, response)=>{
+			let access_token_facebook = null;
+			let access_token_instagram = null;
+			let access_token_twitter = null;
+			let private_token_twitter = null;
+			console.log(Meteor.user());
+			if(Meteor.user()){
+				if(Meteor.user().services.facebook)
+					access_token_facebook =  Meteor.user().services.facebook.accessToken;
+				if(Meteor.user().services.instagram)
+					access_token_instagram = Meteor.user().services.instagram.id;
+				if(Meteor.user().services.twitter){
+					access_token_twitter = Meteor.user().services.twitter.accessToken;
+					private_token_twitter = Meteor.user().services.twitter.accessTokenSecret;
+				}
+				
+			}
+			Meteor.call("FacebookRequestSearch",{	
+				query:text, 
+				type:type, 
+				access_token:access_token_facebook,
+				latitud:latitud,
+				longitud:longitud,
+				radius:radius
+			},(err, response)=>{
 				if(err) throw err;
 				console.log(response);
 			});
-			Meteor.call("TwitterRequestSearch", {query:text}, (err, response)=>{
+			Meteor.call("InstagramRequestSearch", {
+				query:text,
+				idUser:access_token_instagram
+			}, (err, response)=>{
+				if(err) throw err;
+				if(access_token_instagram && text){
+					//manejo de la respuesta para buscar	
+				}
+				console.log(response);
+			})
+			Meteor.call("TwitterRequestSearch",{	
+				query:text, 
+				access_token:access_token_twitter, 
+				access_private_token:private_token_twitter
+			},(err, response)=>{
 				if(err) throw err;
 				console.log(response);
 			});
@@ -78,7 +114,13 @@ class App extends Component{
 				    }/>					
 				    <Route path='/dashboard' render={(routeProps)=>
 				    	<Principal {...routeProps}
-				    	buscar = {(text, type)=>{this.buscar(text, type)}}
+				    	buscar = {(text, type, latitud, longitud, radius)=>{this.buscar(text, type, latitud, longitud, radius)}}
+				    	disableFacebook ={ Meteor.user() && Meteor.user().services ? 
+				    		Meteor.user().services.facebook ? false : true
+				    		: true }
+				    	disableInstagram = { Meteor.user() && Meteor.user().services ? 
+				    		Meteor.user().services.instagram ? false : true
+				    	 : true }
 				    	verPerfil = {()=>{this.verPerfil()}}
 				    	busquedas = {this.props.busquedas}/>
 				    }/>
@@ -99,7 +141,8 @@ class App extends Component{
 
 
 export default createContainer(()=>{
-
+	Meteor.subscribe("usuarios");
+	Meteor.subscribe("busquedas");	
 	return{
 		usuario:Meteor.user(),
         busquedas: Busquedas.find({}, { sort: { cantidad: -1 } }).fetch(),		

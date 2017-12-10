@@ -49,16 +49,28 @@ class MenuPrincipal extends Component{
 	            { this.state.abierto ?
 	                <div className="subMenu">
 	                    <div className="subMenuItem">
-	                        <a onClick={()=>this.abrirConfiguracion()}>Settings</a>
+	                        <a onClick={()=>this.abrirConfiguracion()}>
+	            	            Accounts
+	            	            {this.state.config?
+	                                <i className="fa fa-caret-up" aria-hidden="true"></i>
+	            	            :
+	                                <i className="fa fa-caret-down" aria-hidden="true"></i>	            	
+	            	            }
+	                        </a>	                        
 	                        { this.state.config ?
-	                        	<AccountsUIWrapper/>	  
+	                            <AccountsUIWrapper/> 
 	                        :
 	                            null
 	                        }                  
 	                    </div>
-	                    <div className="subMenuItem">
-	                    	<a onClick={()=>this.props.verPerfil()}> Profile</a> 
-	                    </div>
+	                    {Meteor.user()?
+	                        <div className="subMenuItem">
+	                    	    <a onClick={()=>this.props.verPerfil()}> Profile</a> 
+	                        </div>
+	                    :
+	                        null    	                    
+	                    }
+
 	                </div>
 	            :
 	                null
