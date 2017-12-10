@@ -4,7 +4,7 @@ import { Mongo } from 'meteor/mongo';
 export const Historial = new Mongo.Collection('historial');
  
 if (Meteor.isServer) {
-    Meteor.publish('Historial', function historialPublication() {
+    Meteor.publish('historial', function historialPublication() {
         return Historial.find();
     });
 }
