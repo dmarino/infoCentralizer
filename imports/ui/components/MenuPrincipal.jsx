@@ -16,16 +16,12 @@ class MenuPrincipal extends Component{
 		console.log(this.props);
 		return (
 			<div className="menu">
-	            <img src="./images/logo.png"></img>
+	            <img src="./images/logo.png" alt=""></img>
 	            <AccountsUIWrapper/>
 				<button onClick={()=>this.props.verPerfil()}> Perfil </button>
 			</div>
 		);
 	}
 }
-
-MenuPrincipal.PropTypes={
-
-};
 
 export default MenuPrincipal;
