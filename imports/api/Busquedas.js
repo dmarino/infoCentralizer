@@ -10,7 +10,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'busqueda.insert'(datos) {
+  'busquedas.insert'(datos) {
     check(datos,{
       "nombre":String,
       "tipo":String,
@@ -21,7 +21,7 @@ Meteor.methods({
       datos
     });
   },
-  'busqueda.update'(busquedaId, cantidadB) {
+  'busquedas.update'(busquedaId, cantidadB) {
     check(busquedaId, String);
     check(cantidadB, Number);
  

@@ -75,7 +75,7 @@ class App extends Component{
 			});
 		}
 
-		Meteor.call("busquedas.insert",{nombre:text,tipo:type,cantidad:1});
+		Meteor.call("busquedas.insert", {nombre:text,tipo:type,cantidad:1});
 
 	}
 	actualizar(nick, pass, agregar){
@@ -123,7 +123,6 @@ class App extends Component{
 				    }/>
 				    <Route path="/search" component={Search}/>
 				    {Meteor.user()?
-
 				    	<Route path='/profile' render={(routeProps)=>
 				    	<Profile {...routeProps}
 				    	actualizar = {(nick, pass, agregar)=>{this.actualizar(nick, pass, agregar)}}/>
