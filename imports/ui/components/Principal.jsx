@@ -12,9 +12,6 @@ class Principal extends Component{
 
 	constructor(props){
 		super(props);
-		this.state={
-			lugar:false
-		};
 	}
 
 	onKeyPress(evt){
@@ -22,24 +19,7 @@ class Principal extends Component{
 			this.props.buscar(evt.target.value, this.selected.value, this.latitud, this.longitud, this.radius);
 		}
 	}
-
-	enableMore(){
-		if(this.selected.value === "place"){
-			this.setState({
-				lugar:true
-			});
-		}
-		else if(this.state.lugar){
-			this.setState({
-				lugar:false
-			});
-		}
-	}
-
-	renderTrendings(){
 	
-	}
-
 	render(){
 		return (
 			<div id="Principal">
@@ -56,22 +36,13 @@ class Principal extends Component{
 			    <div className="grid" id="opciones">
 			        <div className="busqueda">
 			            <input type="text" placeholder="busqueda" arial-label="busqueda" onKeyPress={this.onKeyPress.bind(this)}/>
-		                <select name="type" id="type" ref = {(input)=> this.selected = input} 
-		        	        onChange={()=>this.enableMore()}>
+		                <select name="type" id="type" ref = {(input)=> this.selected = input}>
 		        	        <option value="page">page</option>
 		        	        <option value="place">place</option>
 		        	        <option value="user" disabled={this.props.disableFacebook}>user</option>
 		        	        <option value="group" disabled={this.props.disableFacebook}>group</option>
 		        	        <option value="event" disabled={this.props.disableFacebook}>event</option>
 		                </select>
-		                {this.state.lugar ? 
-		        	        <span>
-			        	        <input type="text" placeholder = "latitud" ref = {(input)=> this.latitud = input} />
-			        	        <input type="text" placeholder = "longitud" ref = {(input)=> this.longitud = input} />
-			        	        <input type="text" placeholder = "Distancia radial" ref = {(input)=> this.radius = input} />
-		        	        </span>
-		        	    :null
-		                }
 		                <select name="user" id="user" ref = {(input)=> this.selectInsta = input}>
 		                	<option value="usuarios">Usuarios</option>
 		                	<option value="publicaciones" disabled={this.props.disableInstagram}>Mis publicaciones</option>
