@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Link, Switch, Route, Redirect } from 'react-router-dom';
 
 import {NotFound} from './NotFound.jsx';
+import HistorialUsuario from './HistorialUsuario.jsx';
 
 //import "../styles/Profile.css";
 
@@ -39,6 +40,7 @@ class Profile extends Component{
 					<div>
 						<p>Nick: {usuario.profile.nick}</p>
 						<p>Contraseña: {usuario.profile.pass}</p>
+						<HistorialUsuario usuario={usuario.profile.nick}/>
 					</div>
 					:
 					<div>
