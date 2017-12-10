@@ -5,6 +5,7 @@ import { check } from "meteor/check";
 if(Meteor.isServer){
 
 	var Twit = require('twit');
+	var Future = require("fibers/future");
 
 	Meteor.methods({
 		"FacebookRequestSearch"({query, type, access_token}){
@@ -27,6 +28,7 @@ if(Meteor.isServer){
 		},
 		"TwitterRequestSearch"({query, access_token, access_private_token}){
 			var T;
+			let future = new Future();
 			if(access_token){
 					T = new Twit({
 					  consumer_key:         process.env.TwitterID,
@@ -38,15 +40,20 @@ if(Meteor.isServer){
 			}
 			else{
 					T = new Twit({
-					  consumer_key:         process.env.TwitterID,
-					  consumer_secret:      process.env.TwitterSecret,
+					  consumer_key:         "5XiKsNFNjFe5H7QNH8oQq6552",
+					  consumer_secret:      "hpTpCVoO8Zsf8IfNtS2wRo6rjyio8WiLBeuJcxiEtzlsKzsMc7",
 					  app_only_auth:        true,
 					  timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
 					});
 			}
 			T.get('search/tweets', { q: 'banana since:2011-07-11', count: 2 }, function(err, data, response) {
-			  return data;
+			  future.return({
+			  	err:err,
+			  	data:data
+			  });
 			});
+
+			return future.wait();
 		}
 	});
 }
