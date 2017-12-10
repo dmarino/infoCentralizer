@@ -13,7 +13,6 @@ class MenuPrincipal extends Component{
 	}
 
 	render(){
-		console.log(this.props);
 		return (
 			<div className="menu">
 	            <img src="./images/logo.png" alt=""></img>

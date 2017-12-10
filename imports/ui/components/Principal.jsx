@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import { createContainer } from 'meteor/react-meteor-data';
 
 import { Switch, Route, Redirect} from 'react-router-dom';
 
@@ -54,9 +55,9 @@ class Principal extends Component{
 		        	        onChange={()=>this.enableMore()}>
 		        	        <option value="page">page</option>
 		        	        <option value="place">place</option>
-		        	        <option value="user" disabled={!Meteor.user()}>user</option>
-		        	        <option value="group" disabled={!Meteor.user()}>group</option>
-		        	        <option value="event" disabled={!Meteor.user()}>event</option>
+		        	        <option value="user" disabled={this.props.disableFacebook}>user</option>
+		        	        <option value="group" disabled={this.props.disableFacebook}>group</option>
+		        	        <option value="event" disabled={this.props.disableFacebook}>event</option>
 		                </select>
 		                {this.state.lugar ? 
 		        	        <span>
@@ -66,6 +67,10 @@ class Principal extends Component{
 		        	        </span>
 		        	    :null
 		                }
+		                <select name="user" id="user" ref = {(input)=> this.selectInsta = input}>
+		                	<option value="usuarios">Usuarios</option>
+		                	<option value="publicaciones" disabled={this.props.disableInstagram}>Mis publicaciones</option>
+		                </select>
 			        </div>
 			        <div id="dashboard">
 			            <Opcion></Opcion>
@@ -80,4 +85,8 @@ class Principal extends Component{
 	}
 }
 
-export default Principal
+export default createContainer(()=>{
+	Meteor.subscribe("usuarios");
+	return{
+	};
+},Principal);

@@ -2,6 +2,16 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check'; 
 
+
+if (Meteor.isServer) {
+  // This code only runs on the server
+  Meteor.publish('usuarios', function usuariosPublication() {
+    return Meteor.users.find(this.userId);
+  });
+}
+
+
+
 Meteor.methods({
 
 	"users.insertar"(nick, pass){
