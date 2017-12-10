@@ -18,7 +18,10 @@ class App extends Component{
 		super(props);
 		this.state={
 			usuario:null,
-			busqueda:false
+			busqueda:false,
+	        resultaadosFace:[],
+	        resultadosInsta:[],
+	        resultadosTwitter:[]			
 		};
 	}
 
