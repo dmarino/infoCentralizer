@@ -10,15 +10,59 @@ class MenuPrincipal extends Component{
 
 	constructor(props){
 		super(props);
+		this.state={
+		    abierto:false,
+		    config:false
+		};
 	}
 
+	abrirSubMenu(){
+	    if(this.state.abierto){
+	        this.setState({abierto:false});
+	    }
+	    else{
+	        this.setState({abierto:true});
+	    }
+	}
+
+	abrirConfiguracion(){
+	    if(this.state.config){
+	        this.setState({config:false});
+	    }
+	    else{
+	        this.setState({config:true});
+	    }
+	}	
+
 	render(){
-		console.log(this.props);
 		return (
 			<div className="menu">
-	            <img src="./images/logo.png" alt=""></img>
-	            <AccountsUIWrapper/>
-				<button onClick={()=>this.props.verPerfil()}> Perfil </button>
+	            <a href="/inicio"><img src="./images/logo.png" alt=""></img></a>
+	            <span onClick={()=>this.abrirSubMenu()}>
+	            	<i className="fa fa-user" aria-hidden="true"></i>
+	            	{this.state.abierto?
+	                    <i className="fa fa-caret-up" aria-hidden="true"></i>
+	            	:
+	                    <i className="fa fa-caret-down" aria-hidden="true"></i>	            	
+	            	}
+	            </span>
+	            { this.state.abierto ?
+	                <div className="subMenu">
+	                    <div className="subMenuItem">
+	                        <a onClick={()=>this.abrirConfiguracion()}>Settings</a>
+	                        { this.state.config ?
+	                        	<AccountsUIWrapper/>	  
+	                        :
+	                            null
+	                        }                  
+	                    </div>
+	                    <div className="subMenuItem">
+	                    	<a onClick={()=>this.props.verPerfil()}> Profile</a> 
+	                    </div>
+	                </div>
+	            :
+	                null
+	            }
 			</div>
 		);
 	}

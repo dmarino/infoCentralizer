@@ -10,12 +10,15 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'busqueda.insert'(nombre) {
-    check(nombre, Number);
+  'busqueda.insert'(datos) {
+    check(datos,{
+      "nombre":String,
+      "tipo":String,
+      "cantidad":Number
+    });
 
     Busquedas.insert({
-      nombre,
-      cantidad: 0,
+      datos
     });
   },
   'busqueda.update'(busquedaId, cantidadB) {

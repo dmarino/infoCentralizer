@@ -4,9 +4,10 @@ html, body{
   height: 100%;
   padding: 0;
   margin: 0;
-  font-size: 1.2vw;  
+  font-size: 1.5vw;  
   font-family: "Oswald";  
-  background-color: #A9E2F3;
+  background-image: url("images/background.jpeg");
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -15,6 +16,10 @@ h1, h2, h3, h4, h5, h6{
 
 h1{
   font-size: 5vw;
+}
+
+a:hover{
+  cursor: pointer;
 }
 
 #render-target{
@@ -75,13 +80,42 @@ h1{
   height: 5%;  
   text-align: right;
   padding: 0.5%;
-  background-color: #fff;
+  padding-right: 2%;
+  background-color: rgba(255,255,255,0.7);
 }
 
 .menu img{
   height: 100%;
   float: left;
 }
+
+.menu span{
+  margin-right: 1.5%;
+  cursor: pointer;
+}
+
+.menu span i{
+  margin-right: 0.5%;
+}
+
+.subMenu{
+  position: fixed;
+  width: 7%;
+  text-align: left;
+  right: 3%;
+  top: 7%;
+  background-color: rgba(255,255,255,0.7);
+}
+
+.subMenuItem{
+  width: 100%;
+  display: block;
+}
+
+.subMenuItem:hover a{
+  text-decoration: underline;
+}
+
 
 /*grids*/
 .grid{
@@ -93,13 +127,13 @@ h1{
 }
 
 #trending{
-  top: 0;
+  position: relative;
   background-color: #fff;   
   padding-left: 2%;
   width: 25%;
-  height: 70%;
+  height: 65%;
+  vertical-align:top;  
 }
-
 
 #opciones{
   width: 65%;
@@ -121,11 +155,15 @@ h1{
 }
 
 .opcion{
-  width: 30%;
-  height: 30%;
-  border-radius: 25px;  
-  background-color: #fff;
+  width: 48%;
+  height: 48%;
+  margin: 1%;
   text-align: center;
   display: inline-block;
-  margin: 2%;
+}
+
+.opcion iframe{
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
 }

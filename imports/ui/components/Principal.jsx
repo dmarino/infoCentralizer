@@ -35,6 +35,10 @@ class Principal extends Component{
 		}
 	}
 
+	renderTrendings(){
+	
+	}
+
 	render(){
 		return (
 			<div id="Principal">
@@ -44,6 +48,7 @@ class Principal extends Component{
 			    </MenuPrincipal>
 
 			    <div className="grid" id="trending">
+			        <h2>TRENDING</h2>
 			        <span>prueba prueba prueba</span>
 			    </div>
 

@@ -9,6 +9,7 @@ import Profile from "../components/Profile.jsx";
 import Search from "../components/Search.jsx";
 import NotFound from "../components/NotFound.jsx";
 
+import { Busquedas } from '../../api/Busquedas.js';
 
 class App extends Component{
 	constructor(props){
@@ -40,6 +41,9 @@ class App extends Component{
 				console.log(response);
 			});
 		}
+
+		Meteor.call("busquedas.insert",{nombre:text,tipo:type,cantidad:1});
+
 	}
 	actualizar(nick, pass, agregar){
 		if(agregar){
@@ -68,11 +72,15 @@ class App extends Component{
 			<div className="App">
 				<Switch>
 					<Redirect exact from="/" to="/inicio"></Redirect>
-				    <Route path="/inicio" component={Inicio}/>					
+				    <Route path="/inicio" render={(routeProps)=>
+				    	<Inicio {...routeProps}
+				    	busquedas = {this.props.busquedas}/>	
+				    }/>					
 				    <Route path='/dashboard' render={(routeProps)=>
 				    	<Principal {...routeProps}
 				    	buscar = {(text, type)=>{this.buscar(text, type)}}
-				    	verPerfil = {()=>{this.verPerfil()}}/>
+				    	verPerfil = {()=>{this.verPerfil()}}
+				    	busquedas = {this.props.busquedas}/>
 				    }/>
 				    <Route path="/search" component={Search}/>
 				    {Meteor.user()?
@@ -93,6 +101,7 @@ class App extends Component{
 export default createContainer(()=>{
 
 	return{
-		usuario:Meteor.user()
+		usuario:Meteor.user(),
+        busquedas: Busquedas.find({}, { sort: { cantidad: -1 } }).fetch(),		
 	};
 },App);

@@ -13,8 +13,10 @@ class Opcion extends Component{
 
 	render(){
 		return (
-		    <div className="opcion">
-		        <span>nombre</span>
+		    <div className="opcion" >
+		        <iframe>
+		            <span>nombre</span>
+		        </iframe>
 		    </div>
 		);
 	}
