@@ -60,7 +60,7 @@ class App extends Component{
 				    <Route path='/dashboard' render={(routeProps)=>
 				    	<Principal {...routeProps}
 				    	buscar = {(text, type)=>{this.buscar(text, type)}}
-				    	verPerfil = {(t)=>{this.verPerfil()}}/>
+				    	verPerfil = {()=>{this.verPerfil()}}/>
 				    }/>
 				    <Route path="/search" component={Search}/>
 				    {Meteor.user()?

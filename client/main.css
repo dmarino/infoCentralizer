@@ -66,10 +66,10 @@ h1{
 /*Menu*/
 
 .menu{
-  width: 98%;
+  width: 99%;
   height: 5%;  
   text-align: right;
-  padding: 1%;
+  padding: 0.5%;
   border-bottom-style: solid;
   border-bottom-color: #A9E2F3;
 }

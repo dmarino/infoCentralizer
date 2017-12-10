@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 import { Switch, Route, Redirect} from 'react-router-dom'
 
-
-import AccountsUIWrapper from "./AccountsUIWrapper.jsx";
+import MenuPrincipal from "./MenuPrincipal.jsx";
 import NotFound from "./NotFound.jsx";
 
 class Principal extends Component{
@@ -23,11 +22,11 @@ class Principal extends Component{
 	render(){
 		return (
 			<div id="Principal">
-	            <div className="menu">
-	                <img className="logo" src="./images/logo.png"></img>
-					<AccountsUIWrapper/>
-					<button onClick={()=>this.props.verPerfil()}> Perfil </button>
-				</div>		
+			    <MenuPrincipal 
+                    verPerfil = {()=>{this.props.verPerfil()}}
+			    >
+			    </MenuPrincipal>
+
 		        <p>Hola! Soy el componente principal :3</p>
 		        <span>Digite lo que quiere buscar</span>
 		        <br/>
