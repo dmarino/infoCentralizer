@@ -50,7 +50,7 @@ class Inicio extends Component{
             context.clearRect(0, 0, 700, 400);
             context.beginPath();
 
-            context.fillStyle = "#ff0000";    
+            context.fillStyle = "#A9E2F3";    
 
             for (i = 1; i < n; ++i) {
                 d = nodes[i];
@@ -105,9 +105,8 @@ class Inicio extends Component{
 			    </canvas>	
 			    <div id="InfoInicio">
 			        <h1>INFO-CENTRALIZER</h1>
-			        <p>This is an application that allows you to compare the results of the same search on different social networks. </p>
-			        <p>To begin click next</p>	
-			        <a href="/dashboard">Next</a>
+			        <p>This is an application that allows you to compare the results of a search on different Social Networks</p>
+			        <p>To begin click <a href="/dashboard">Next</a></p>	
 			    </div>					    	    
 			</div>
 		);

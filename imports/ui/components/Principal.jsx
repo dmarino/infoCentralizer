@@ -23,7 +23,8 @@ class Principal extends Component{
 	render(){
 		return (
 			<div id="Principal">
-	            <div>
+	            <div className="menu">
+	                <img className="logo" src="./images/logo.png"></img>
 					<AccountsUIWrapper/>
 					<button onClick={()=>this.props.verPerfil()}> Perfil </button>
 				</div>		
