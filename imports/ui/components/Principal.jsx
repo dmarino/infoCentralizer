@@ -55,8 +55,8 @@ class Principal extends Component{
 			    <div className="grid" id="opciones">
 			        <div className="busqueda">
 			            <div className="busquedaItem">
-			                <input type="text" placeholder="Search" arial-label="Search" onKeyPress={this.onKeyPress.bind(this)} onChange={this.handleChange}/>
-			                <a onClick={this.buscar.bind(this)}> Search </a>			                            
+			                <input type="text" placeholder="Insert Your Text Here" arial-label="Search" onKeyPress={this.onKeyPress.bind(this)} onChange={this.handleChange}/>
+			                <a id="buscar" onClick={this.buscar.bind(this)}> Search </a>			                            
 			            </div>
 			            <div className="busquedaItem">
 			                <div className="busquedaSubItem">
