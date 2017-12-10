@@ -44,7 +44,9 @@ if(Meteor.isServer){
 					  timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
 					});
 			}
-			return T.get('search/tweets', { q: 'banana since:2011-07-11', count: 2 });
+			T.get('search/tweets', { q: 'banana since:2011-07-11', count: 2 }, function(err, data, response) {
+			  return data;
+			});
 		}
 	});
 }
