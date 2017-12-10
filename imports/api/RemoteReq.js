@@ -8,7 +8,7 @@ if(Meteor.isServer){
 	var Future = require("fibers/future");
 
 	Meteor.methods({
-		"FacebookRequestSearch"({query, type, access_token}){
+		"FacebookRequestSearch"({query, type, access_token, latitud, longitud, radius}){
 			check(query, String);
 			check(type, String);
 
@@ -19,7 +19,13 @@ if(Meteor.isServer){
 			else{
 				accessToken = process.env.FBID + "|" + process.env.FBSecret;
 			}
-			let url = "https://graph.facebook.com/search?q=" + query + "&type=" + type + "&access_token=" + accessToken;
+			let url = "";
+			if(latitud && longitud && radius){
+				url = "https://graph.facebook.com/search?q=" + query + "&type=" + type + "&center=" 
+						+ latitud + "," + longitud + "&distance=" + radius + "&access_token=" + accessToken;
+			}
+			else
+				url = "https://graph.facebook.com/search?q=" + query + "&type=" + type + "&access_token=" + accessToken;
 			return HTTP.get(url);
 		},
 		"InstagramRequestSearch"({query, idUser}){

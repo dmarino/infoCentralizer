@@ -19,7 +19,7 @@ class Principal extends Component{
 
 	onKeyPress(evt){
 		if(evt.key ==="Enter"){
-			this.props.buscar(evt.target.value, this.selected.value);
+			this.props.buscar(evt.target.value, this.selected.value, this.latitud, this.longitud, this.radius);
 		}
 	}
 
@@ -61,9 +61,9 @@ class Principal extends Component{
 		                </select>
 		                {this.state.lugar ? 
 		        	        <span>
-			        	        <input type="text" placeholder = "latitud"/>
-			        	        <input type="text" placeholder = "longitud"/>
-			        	        <input type="text" placeholder = "Distancia radial"/>
+			        	        <input type="text" placeholder = "latitud" ref = {(input)=> this.latitud = input} />
+			        	        <input type="text" placeholder = "longitud" ref = {(input)=> this.longitud = input} />
+			        	        <input type="text" placeholder = "Distancia radial" ref = {(input)=> this.radius = input} />
 		        	        </span>
 		        	    :null
 		                }
