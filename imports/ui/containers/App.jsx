@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
+import { createContainer } from 'meteor/react-meteor-data';
 
 import Inicio from "../components/Inicio.jsx";
 import Principal from "../components/Principal.jsx";
@@ -17,12 +18,24 @@ class App extends Component{
 		};
 	}
 
+	componentDidMount(){
+		if(this.props.usuario !== this.state.usuario){
+			this.setState({
+				usuario:this.props.usuario
+			})
+		}
+	}
+
 	buscar(text, type){
 		texto = "/search/" + text;
 		if(this.props.location.pathname !== texto){
 			this.props.history.push(texto);
-			let access_token = Meteor.user()?Meteor.user().services.facebook.accessToken:null;
+			let access_token = Meteor.user() ? Meteor.user().services.facebook.accessToken:null;
 			Meteor.call("FacebookRequestSearch",{query:text, type:type, access_token:access_token},(err, response)=>{
+				if(err) throw err;
+				console.log(response);
+			});
+			Meteor.call("TwitterRequestSearch", {query:text}, (err, response)=>{
 				if(err) throw err;
 				console.log(response);
 			});
@@ -51,7 +64,6 @@ class App extends Component{
 	}
 
 	render(){
-		console.log(Meteor.user());
 		return(
 			<div className="App">
 				<Switch>
@@ -78,4 +90,9 @@ class App extends Component{
 }
 
 
-export default App;
+export default createContainer(()=>{
+
+	return{
+		usuario:Meteor.user()
+	};
+},App);
