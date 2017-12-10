@@ -26,7 +26,7 @@ class App extends Component{
 		}
 	}
 
-	buscar(text, type, latitud, longitud, radius){
+	buscar(text, type){
 		texto = "/search/" + text;
 		if(this.props.location.pathname !== texto){
 			this.props.history.push(texto);
@@ -49,10 +49,7 @@ class App extends Component{
 			Meteor.call("FacebookRequestSearch",{	
 				query:text, 
 				type:type, 
-				access_token:access_token_facebook,
-				latitud:latitud,
-				longitud:longitud,
-				radius:radius
+				access_token:access_token_facebook
 			},(err, response)=>{
 				if(err) throw err;
 				console.log(response);
@@ -107,7 +104,7 @@ class App extends Component{
 				    <Route path="/inicio" component={Inicio}/>					
 				    <Route path='/dashboard' render={(routeProps)=>
 				    	<Principal {...routeProps}
-				    	buscar = {(text, type, latitud, longitud, radius)=>{this.buscar(text, type, latitud, longitud, radius)}}
+				    	buscar = {(text, type)=>{this.buscar(text, type)}}
 				    	disableFacebook ={ Meteor.user() && Meteor.user().services ? 
 				    		Meteor.user().services.facebook ? false : true
 				    		: true }
