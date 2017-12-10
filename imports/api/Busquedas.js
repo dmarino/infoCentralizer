@@ -10,21 +10,28 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'busqueda.insert'(datos) {
-    check(datos,{
-      "nombre":String,
-      "tipo":String,
-      "cantidad":Number
+  'busquedas.insert'(text, type) {
+    check(text, String);
+    check(type, String);
+
+    let anterior = Busquedas.findOne({
+      "texto":text
     });
 
-    Busquedas.insert({
-      datos
-    });
-  },
-  'busqueda.update'(busquedaId, cantidadB) {
-    check(busquedaId, String);
-    check(cantidadB, Number);
- 
-    Busquedas.update(busquedaId, { $set: { cantidad: cantidadB} });
-  },
+    if(anterior){
+      number = anterior.numero + 1;
+      Busquedas.update(anterior._id,{
+        $set:{
+          numero:number
+        }
+      });
+    }
+    else{
+      datos={
+        "texto":text,
+        "numero":1
+      };
+      Busquedas.insert(datos);
+    }
+  }
 });

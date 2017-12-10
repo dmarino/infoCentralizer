@@ -10,6 +10,9 @@ import Search from "../components/Search.jsx";
 import NotFound from "../components/NotFound.jsx";
 
 
+import {Busquedas} from "../../api/Busquedas.js";
+import {Historial} from "../../api/Historial.js";
+
 class App extends Component{
 	constructor(props){
 		super(props);
@@ -44,6 +47,9 @@ class App extends Component{
 		let access_token_twitter = null;
 		let private_token_twitter = null;
 		if(Meteor.user() && Meteor.user().services){
+			if(Meteor.user().profile.nick){
+				Meteor.call("historial.insert", Meteor.user().profile.nick, text, type);
+			}
 			if(Meteor.user().services.facebook)
 				access_token_facebook =  Meteor.user().services.facebook.accessToken;
 			if(Meteor.user().services.instagram)
@@ -51,10 +57,9 @@ class App extends Component{
 			if(Meteor.user().services.twitter){
 				access_token_twitter = Meteor.user().services.twitter.accessToken;
 				private_token_twitter = Meteor.user().services.twitter.accessTokenSecret;
-
 			}
-			
 		}
+		Meteor.call("busquedas.insert", text, type);
 		Meteor.call("FacebookRequestSearch",{	
 			query:text, 
 			type:type, 
@@ -86,18 +91,24 @@ class App extends Component{
 		if(agregar){
 			console.log("se debe meter en el user de " + nick);
 			Meteor.call("users.updateAccount", nick, pass, (resp, err)=>{
-				if(err) 
+				if(err===-1){
 					alert("No existe un usuario con ese login");
+				}else{
+					this.props.history.push("/dashboard");
+				}
 			});
 		}
 		else{
 			console.log("nuevo user " + nick);
 			Meteor.call("users.insertar", nick, pass, (resp, err)=>{
-				if(err)
+				if(err===-1){
 					alert("Ya existe un usuario con ese login");
+				}
+				else{
+					this.props.history.push("/dashboard");
+				}
 			});
 		}
-		this.props.history.push("/inicio");
 	}
 	verPerfil(){
 		if(this.props.location.pathname!== "/profile")
@@ -145,6 +156,7 @@ class App extends Component{
 export default createContainer(()=>{
 	Meteor.subscribe("usuarios");
 	Meteor.subscribe("busquedas");
+	Meteor.subscribe("historial");
 	return{
 		usuario:Meteor.user()
 	};
