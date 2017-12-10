@@ -6,6 +6,9 @@ import { Switch, Route, Redirect} from 'react-router-dom';
 
 import MenuPrincipal from "./MenuPrincipal.jsx";
 import Opcion from "./Opcion.jsx";
+import Profile from "../components/Profile.jsx";
+import Search from "../components/Search.jsx";
+
 import NotFound from "./NotFound.jsx";
 
 class Principal extends Component{
@@ -13,7 +16,10 @@ class Principal extends Component{
 	constructor(props){
 		super(props);
 	    this.state={
-	        alias:""
+	        alias:"",
+	        resultaadosFace:[],
+	        resultadosInsta:[],
+	        resultadosTwitter:[]
 	    };
 	}
 
@@ -38,7 +44,12 @@ class Principal extends Component{
             else{return null}
 	    });	
 	}
-	
+
+	renderResultados(){
+
+	}
+
+
 	render(){
 		return (
 			<div id="Principal">
@@ -84,7 +95,8 @@ class Principal extends Component{
 			                </div>			                 
 			            </div>				            		            
 			        </div>
-			        <div id="dashboard">		            			            			            
+			        <div id="dashboard">		
+			            {this.renderResultados()}            			            			            
 			        </div>
 
 			    </div>

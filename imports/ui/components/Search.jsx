@@ -4,8 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Link, Switch, Route, Redirect } from 'react-router-dom';
 
 import {NotFound} from './NotFound.jsx';
-
-//import "../styles/Search.css";
+import MenuPrincipal from "./MenuPrincipal.jsx";
 
 class Search extends Component{
 
@@ -17,7 +16,7 @@ class Search extends Component{
 	}
 
 	render(){
-		console.log(this.props);
+		console.log(this.props);	
 		if(!this.props.busqueda && !this.state.busqueda){
 			this.setState({
 				busqueda:true
@@ -25,12 +24,18 @@ class Search extends Component{
 			this.props.buscar(this.props.match.params.id, this.props.match.params.type);
 		}
 		return (
-			<div id="Search">
-				<p>Hola! soy Search...</p>
-				<Switch>
-					<Route exact path="/search/:id/:type" component={componente1}/>
-					<Redirect to="/NotFound"/>
-				</Switch>
+			<div id="principal">
+				<MenuPrincipal 
+                    verPerfil = {()=>{this.props.verPerfil()}}
+	            >
+	            </MenuPrincipal>
+	            <div id="search">
+				    <p>Hola! soy Search...</p>
+				    <Switch>
+					    <Route exact path="/search/:id/:type" component={componente1}/>
+					    <Redirect to="/NotFound"/>
+				    </Switch>	            
+	            </div>	
 			</div>
 		);
 	}

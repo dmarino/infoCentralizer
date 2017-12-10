@@ -31,7 +31,7 @@ class App extends Component{
 	}
 
 	buscar(text, type){
-		texto = "/search/" + text + "/" + type;
+		texto = "/dashboard/" + text + "/" + type;
 		if(this.props.location.pathname !== texto){
 			this.props.history.push(texto);
 			this.setState({
@@ -132,12 +132,6 @@ class App extends Component{
 				    	 : true }
 				    	verPerfil = {()=>{this.verPerfil()}}
 				    	busquedas={this.props.busquedas}/>
-				    }/>
-				    <Route path="/search/:id/:type" render={(routeProps)=>
-				    	<Search {...routeProps}
-				    		busqueda = {this.state.busqueda}
-				    		buscar = {(text, type)=>{this.busqueda(text,type)}}
-				    	/>
 				    }/>
 				    {Meteor.user()?
 				    	<Route path='/profile' render={(routeProps)=>
