@@ -9,13 +9,13 @@ import Profile from "../components/Profile.jsx";
 import Search from "../components/Search.jsx";
 import NotFound from "../components/NotFound.jsx";
 
-import { Busquedas } from '../../api/Busquedas.js';
 
 class App extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			usuario:null
+			usuario:null,
+			busqueda:false
 		};
 	}
 
@@ -28,55 +28,59 @@ class App extends Component{
 	}
 
 	buscar(text, type){
-		texto = "/search/" + text;
+		texto = "/search/" + text + "/" + type;
 		if(this.props.location.pathname !== texto){
 			this.props.history.push(texto);
-			let access_token_facebook = null;
-			let access_token_instagram = null;
-			let access_token_twitter = null;
-			let private_token_twitter = null;
-			console.log(Meteor.user());
-			if(Meteor.user()){
-				if(Meteor.user().services.facebook)
-					access_token_facebook =  Meteor.user().services.facebook.accessToken;
-				if(Meteor.user().services.instagram)
-					access_token_instagram = Meteor.user().services.instagram.id;
-				if(Meteor.user().services.twitter){
-					access_token_twitter = Meteor.user().services.twitter.accessToken;
-					private_token_twitter = Meteor.user().services.twitter.accessTokenSecret;
-				}
-				
-			}
-			Meteor.call("FacebookRequestSearch",{	
-				query:text, 
-				type:type, 
-				access_token:access_token_facebook
-			},(err, response)=>{
-				if(err) throw err;
-				console.log(response);
+			this.setState({
+				busqueda:true
 			});
-			Meteor.call("InstagramRequestSearch", {
-				query:text,
-				idUser:access_token_instagram
-			}, (err, response)=>{
-				if(err) throw err;
-				if(access_token_instagram && text){
-					//manejo de la respuesta para buscar	
-				}
-				console.log(response);
-			})
-			Meteor.call("TwitterRequestSearch",{	
-				query:text, 
-				access_token:access_token_twitter, 
-				access_private_token:private_token_twitter
-			},(err, response)=>{
-				if(err) throw err;
-				console.log(response);
-			});
+			this.busqueda(text, type);	
 		}
+	}
 
-		Meteor.call("busquedas.insert",{nombre:text,tipo:type,cantidad:1});
+	busqueda(text, type){
+		let access_token_facebook = null;
+		let access_token_instagram = null;
+		let access_token_twitter = null;
+		let private_token_twitter = null;
+		if(Meteor.user() && Meteor.user().services){
+			if(Meteor.user().services.facebook)
+				access_token_facebook =  Meteor.user().services.facebook.accessToken;
+			if(Meteor.user().services.instagram)
+				access_token_instagram = Meteor.user().services.instagram.id;
+			if(Meteor.user().services.twitter){
+				access_token_twitter = Meteor.user().services.twitter.accessToken;
+				private_token_twitter = Meteor.user().services.twitter.accessTokenSecret;
 
+			}
+			
+		}
+		Meteor.call("FacebookRequestSearch",{	
+			query:text, 
+			type:type, 
+			access_token:access_token_facebook
+		},(err, response)=>{
+			if(err) throw err;
+			console.log(response);
+		});
+		Meteor.call("InstagramRequestSearch", {
+			query:text,
+			idUser:access_token_instagram
+		}, (err, response)=>{
+			if(err) throw err;
+			if(access_token_instagram && text){
+				//manejo de la respuesta para buscar	
+			}
+			console.log(response);
+		})
+		Meteor.call("TwitterRequestSearch",{	
+			query:text, 
+			access_token:access_token_twitter, 
+			access_private_token:private_token_twitter
+		},(err, response)=>{
+			if(err) throw err;
+			console.log(response);
+		});
 	}
 	actualizar(nick, pass, agregar){
 		if(agregar){
@@ -105,10 +109,7 @@ class App extends Component{
 			<div className="App">
 				<Switch>
 					<Redirect exact from="/" to="/inicio"></Redirect>
-				    <Route path="/inicio" render={(routeProps)=>
-				    	<Inicio {...routeProps}
-				    	busquedas = {this.props.busquedas}/>	
-				    }/>					
+				    <Route path="/inicio" component={Inicio}/>					
 				    <Route path='/dashboard' render={(routeProps)=>
 				    	<Principal {...routeProps}
 				    	buscar = {(text, type)=>{this.buscar(text, type)}}
@@ -118,10 +119,14 @@ class App extends Component{
 				    	disableInstagram = { Meteor.user() && Meteor.user().services ? 
 				    		Meteor.user().services.instagram ? false : true
 				    	 : true }
-				    	verPerfil = {()=>{this.verPerfil()}}
-				    	busquedas = {this.props.busquedas}/>
+				    	verPerfil = {()=>{this.verPerfil()}}/>
 				    }/>
-				    <Route path="/search" component={Search}/>
+				    <Route path="/search/:id/:type" render={(routeProps)=>
+				    	<Search {...routeProps}
+				    		busqueda = {this.state.busqueda}
+				    		buscar = {(text, type)=>{this.busqueda(text,type)}}
+				    	/>
+				    }/>
 				    {Meteor.user()?
 
 				    	<Route path='/profile' render={(routeProps)=>
@@ -139,9 +144,8 @@ class App extends Component{
 
 export default createContainer(()=>{
 	Meteor.subscribe("usuarios");
-	Meteor.subscribe("busquedas");	
+	Meteor.subscribe("busquedas");
 	return{
-		usuario:Meteor.user(),
-        busquedas: Busquedas.find({}, { sort: { cantidad: -1 } }).fetch(),		
+		usuario:Meteor.user()
 	};
 },App);
