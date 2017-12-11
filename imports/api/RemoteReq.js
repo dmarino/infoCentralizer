@@ -39,8 +39,8 @@ if(Meteor.isServer){
 			let future = new Future();
 			if(access_token){
 				T = new Twit({
-					consumer_key:         process.env.TwitterID,
-					consumer_secret:      process.env.TwitterSecret,
+					consumer_key:         process.env.twitterID,
+					consumer_secret:      process.env.twitterSecret,
 					access_token:         access_token,
 					access_token_secret:  access_private_token,
 					  timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
@@ -48,13 +48,13 @@ if(Meteor.isServer){
 			}
 			else{
 				T = new Twit({
-					consumer_key:         "5XiKsNFNjFe5H7QNH8oQq6552",
-					consumer_secret:      "hpTpCVoO8Zsf8IfNtS2wRo6rjyio8WiLBeuJcxiEtzlsKzsMc7",
+					consumer_key:         process.env.twitterID,
+					consumer_secret:      process.env.twitterSecret,
 					app_only_auth:        true,
 					  timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
 					});
 			}
-			T.get('search/tweets', { q: 'banana since:2011-07-11', count: 25 }, function(err, data, response) {
+			T.get('search/tweets', { q: query, count: 25 }, function(err, data, response) {
 				future.return({
 					err:err,
 					data:data

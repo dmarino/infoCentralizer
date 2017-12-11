@@ -10,6 +10,7 @@ import Profile from "../components/Profile.jsx";
 import Search from "../components/Search.jsx";
 
 import NotFound from "./NotFound.jsx";
+import ListElement from "./ListElement.jsx";
 import {Busquedas} from "../../api/Busquedas.js";
 
 class Principal extends Component{
@@ -18,7 +19,11 @@ class Principal extends Component{
 		super(props);
 	    this.state={
 	        alias:"",
-	        busqueda:false
+	        busqueda:false,
+	        comparar:false,
+	        number:0,
+			primerValor:null,
+			segundoValor:null
 	    };
 	}
 
@@ -48,6 +53,48 @@ class Principal extends Component{
             else{return null}
 	    });	
 	}
+	comparison(value){
+		tmp = this.state.number;
+		tmp = tmp + 1;
+		if(tmp == 2){
+			this.setState({
+				number:0,
+				comparar:true,
+				segundoValor:value
+			});
+		}
+		else
+			this.setState({
+				number:tmp,
+				comparar:false,
+				primerValor:value
+			});
+
+	}
+
+	cleanComparison(){
+		this.setState({
+			number:0,
+			comparar:false,
+			primerValor:null,
+			segundoValor:null
+		})
+	}
+
+	searchToCompare(){
+		if(this.state.primerValor && this.state.segundoValor){
+			tmp = this.state.primerValor.split(",");
+			sourceOne = tmp[1];
+			idOne = tmp[0];
+			tmp = this.state.segundoValor.split(",");
+			sourceTwo = tmp[1];
+			idTwo = tmp[0];
+			console.log(sourceOne);
+			console.log(sourceTwo);
+			console.log(idOne);
+			console.log(idTwo);
+		}
+	}
 
 	renderResultados(){
 		if(this.props.resultadosFace.data && this.props.resultadosInsta.data && this.props.resultadosTwitter.data){
@@ -55,6 +102,7 @@ class Principal extends Component{
 			dataTwt = this.props.resultadosTwitter.data.statuses;
 			dataInsta = this.props.resultadosInsta.data.users;
 			dataTransform = [];
+			console.log(this.props.resultadosTwitter);
 			dataFb.map((e)=>{
 				tmp = {
 					"id":e.id,
@@ -82,16 +130,13 @@ class Principal extends Component{
 				dataTransform.push(tmp);
 			});
 
-
-			console.log(dataFb);
-			console.log(dataTwt);
-			console.log(dataInsta);
-			console.log(dataTransform);
-			dataTransform = this.shuffle(dataTransform);
+			//dataTransform = this.shuffle(dataTransform);
 			console.log(dataTransform);
 
 			return dataTransform.map((p,i)=>{
-	            return <p key={i}>{p.name}</p>;
+	            return <p key={i}>{p.name} <span>
+	            	<ListElement value={`${p.id},${p.source}`} disabled={this.state.comparar} click={(value)=>{this.comparison(value)}}/>
+	            </span></p>;
 		    });	
 
 		}
@@ -168,7 +213,9 @@ class Principal extends Component{
 			                </div>			                 
 			            </div>				            		            
 			        </div>
-			        <div id="dashboard">		
+			        <div id="dashboard">
+			        	<button onClick={()=>{this.cleanComparison()}}>Limpiar seleccion</button>
+			        	<button onClick={()=>{this.searchToCompare()}}>comparar</button>		
 			            {this.renderResultados()}            			            			            
 			        </div>
 			    </div>
