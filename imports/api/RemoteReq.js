@@ -54,7 +54,7 @@ if(Meteor.isServer){
 					  timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
 					});
 			}
-			T.get('search/tweets', { q: query, count: 25 }, function(err, data, response) {
+			T.get('search/tweets', { q: query, count: 25, lang:"en" }, function(err, data, response) {
 				future.return({
 					err:err,
 					data:data
