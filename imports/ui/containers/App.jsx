@@ -130,7 +130,7 @@ class App extends Component{
 		return(
 			<div className="App">
 				<Switch>
-					<Redirect exact from="/" to="/inicio"></Redirect>
+					<Redirect exact from="/" to="/dashboard"></Redirect>
 				    <Route path="/inicio" render={(routeProps)=>
 				    	<Inicio {...routeProps}
 				    	busquedas={this.props.busquedas}/>

@@ -113,9 +113,10 @@ class Principal extends Component{
 			});
 			dataTwt.map((e)=>{
 				if(e.entities.urls.length > 0){
+				    console.log(e);
 					tmp = {
 						"id":e.id,
-						"name":e.user.name,
+						"name":e.text,
 						"source":"twt",
 						"text":e.text,
 						"url":e.entities.urls[0].expanded_url
