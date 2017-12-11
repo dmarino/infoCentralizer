@@ -74,34 +74,31 @@ class App extends Component{
 			if(!err){
 			    this.setState({resultadosFacebook:response});
 			}
-			console.log(response);
 			tmpFacebook = response;
+			Meteor.call("InstagramRequestSearch", {
+				query:text,
+				idUser:access_token_instagram
+			}, (err, response)=>{
+				if(err) throw err;
+				if(access_token_instagram && text){
+					//manejo de la respuesta para buscar	
+				}
+				tmpInstagram = response;
+				Meteor.call("TwitterRequestSearch",{	
+					query:text, 
+					access_token:access_token_twitter, 
+					access_private_token:private_token_twitter
+				},(err, response)=>{
+					if(err) throw err;
+					tmpTwitter = response;
+					this.setState({
+						resultaadosFace:tmpFacebook,
+						resultadosInsta:tmpInstagram,
+						resultadosTwitter:tmpTwitter
+					});
+				});
+			});
 		});
-		Meteor.call("InstagramRequestSearch", {
-			query:text,
-			idUser:access_token_instagram
-		}, (err, response)=>{
-			if(err) throw err;
-			if(access_token_instagram && text){
-				//manejo de la respuesta para buscar	
-			}
-			console.log(response);
-			tmpInstagram = response;
-		})
-		Meteor.call("TwitterRequestSearch",{	
-			query:text, 
-			access_token:access_token_twitter, 
-			access_private_token:private_token_twitter
-		},(err, response)=>{
-			if(err) throw err;
-			console.log(response);
-			tmpTwitter = response;
-		});
-		this.setState({
-			resultaadosFace:tmpFacebook,
-			resultadosInsta:tmpInstagram,
-			resultadosTwitter:tmpTwitter
-		})
 	}
 	actualizar(nick, pass, agregar){
 		if(agregar){
@@ -132,6 +129,9 @@ class App extends Component{
 	}
 
 	render(){
+		console.log(this.state.resultaadosFace);
+		console.log(this.state.resultadosTwitter);
+		console.log(this.state.resultadosInsta);
 		return(
 			<div className="App">
 				<Switch>
