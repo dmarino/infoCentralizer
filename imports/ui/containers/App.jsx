@@ -154,7 +154,8 @@ class App extends Component{
 				    {Meteor.user()?
 				    	<Route path='/profile' render={(routeProps)=>
 				    	<Profile {...routeProps}
-				    	actualizar = {(nick, pass, agregar)=>{this.actualizar(nick, pass, agregar)}}/>
+				    	actualizar = {(nick, pass, agregar)=>{this.actualizar(nick, pass, agregar)}}
+				    	verPerfil = {()=>{this.verPerfil()}}/>
 				   	 	}/>
 					:null}
 				    <Route path="*" component={NotFound}></Route>

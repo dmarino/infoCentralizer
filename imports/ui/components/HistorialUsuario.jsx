@@ -25,7 +25,6 @@ class HistorialUsuario extends Component{
 			console.log(search);
 			return (
 				<div id="HistorialUsuario">
-					Historial de usuario! :D :D :D :D Tankiu Dani :3 <br/>
 					{search.map((e,k)=>{
 						return <p key={k}><Link to={`/dashboard/${e.content}/${e.type}`}> {e.content}/{e.type} </Link></p>
 					})}

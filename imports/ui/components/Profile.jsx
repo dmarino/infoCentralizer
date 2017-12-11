@@ -5,8 +5,8 @@ import { Link, Switch, Route, Redirect } from 'react-router-dom';
 
 import {NotFound} from './NotFound.jsx';
 import HistorialUsuario from './HistorialUsuario.jsx';
+import MenuPrincipal from "./MenuPrincipal.jsx";
 
-//import "../styles/Profile.css";
 
 class Profile extends Component{
 
@@ -32,39 +32,63 @@ class Profile extends Component{
 
 	render(){
 		let usuario = Meteor.user();
-		console.log(usuario);
 		return (
-			<div id="Profile">
-				<p>Hola! soy Profile... y tu eres {usuario.profile.name} </p>
-				{usuario.profile.nick ? 
-					<div>
-						<p>Nick: {usuario.profile.nick}</p>
-						<p>Contraseña: {usuario.profile.pass}</p>
-						<HistorialUsuario usuario={usuario.profile.nick}/>
-					</div>
-					:
-					<div>
-						{!this.state.agregar ? 
-							<p> Puede escoger, si desea, un Nick y una contraseña, con el fin de
-							poder unificar sus cuentas y mostrar resultados mas completos. </p>
-							:
-							<p>Por favor escriba su Nick y su contraseña para unificar cuentas.
-								Recuerde que solo puede haber una cuenta asociada por red social</p>
-						}
-						<input type="text" placeholder="MyNick" ref = {(input)=> this.nick = input}/>
-						<input type="password" placeholder="MyPassword" onKeyPress={this.onKeyPress.bind(this)}/>
-						<input type="checkbox" onChange={this.actualizarEstado.bind(this)}/> Si ya tiene una cuenta asociada 
-						y desea unir esa cuenta y esta.
-					</div>
-				}
+			<div id="Principal">
+			    <MenuPrincipal 
+                    verPerfil = {()=>{this.props.verPerfil()}}
+			    >
+			    </MenuPrincipal>	
+
+			    <div className="grid" id="profile">
+			        <div className="profileItem">
+		                <i className="fa fa-user" aria-hidden="true"></i>			        
+			        </div>
+			        <div className="profileItem">
+		                <label>Nickname:</label>
+		                {usuario.profile.nick ?
+                            <span> {usuario.profile.nick} </span>
+		                :
+						    <input type="text" placeholder="MyNick" ref = {(input)=> this.nick = input}/>		                
+		                }			        
+			        </div>
+			        <div className="profileItem">
+		                { usuario.profile.nick?
+                            null
+		                :
+		                    <div>
+		                        <label>Password:</label>
+						        <input type="password" placeholder="MyPassword" onKeyPress={this.onKeyPress.bind(this)}/>       
+						    </div>       
+		                }			        
+			        </div>	
+			        <div className="profileItem">
+		                { usuario.profile.nick?
+                            null
+		                :
+		                    <div>
+		                        <input type="checkbox" onChange={this.actualizarEstado.bind(this)}/> 
+		                        <span>If you already have an account and you wanna join them</span>  	 
+		                    </div>               
+		                }			        
+			        </div>			        		        			        
+			    </div>
+
+			    <div className="grid" id="historial">
+			        { usuario.profile.nick?
+			        	<div>
+			        	    <h2>History</h2>
+					        <HistorialUsuario usuario={usuario.profile.nick} />
+					    </div>					        
+			        :	
+						<div>
+							<p> You can choose a nickname and a password to join accounts and show more complete results.</p>
+							<p>Remember that you can only have a join account per social network</p>
+						</div>	
+			        }
+			    </div>
 			</div>
 		);
 	}
 }
-
-
-Profile.PropTypes={
-
-};
 
 export default Profile;
