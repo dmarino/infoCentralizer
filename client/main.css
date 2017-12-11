@@ -230,6 +230,11 @@ a:hover{
   padding: 2%;
 }
 
+#dashboard i{
+  margin-right: 2%;
+}
+
+
 #profile{
   position: relative;
   background-color: #fff;   
@@ -250,6 +255,19 @@ a:hover{
   overflow-y: auto;  
 }
 
+#botones{
+  width: 100%;
+  text-align: center;
+}
+
+#botones .boton{
+  width: 40%;
+  margin-right: 10%;
+}
+
+#botones .boton:hover{
+  text-decoration: underline;
+}
 
 .profileItem {
   vertical-align: bottom;

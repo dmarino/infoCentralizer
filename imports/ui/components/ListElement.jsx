@@ -11,7 +11,6 @@ class ListElement extends Component{
 
 	selection(){
 		this.props.click(this.props.value);
-		console.log(this.props.value);
 	}
 
 	render(){

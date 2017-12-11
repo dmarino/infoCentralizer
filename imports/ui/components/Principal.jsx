@@ -137,9 +137,25 @@ class Principal extends Component{
 			console.log(dataTransform);
 
 			return dataTransform.map((p,i)=>{
-	            return <p key={i}>{p.name} <span>
-	            	<ListElement value={`${p.id},${p.source}`} disabled={this.state.comparar} click={(value)=>{this.comparison(value)}}/>
-	            </span></p>;
+	            return <p key={i}> 
+	                {p.source=="fb"?
+	                    <i className="fa fa-facebook-official" aria-hidden="true"></i>
+	                :
+	                    null
+	                }
+	                {p.source=="twt"?
+	                    <i className="fa fa-twitter" aria-hidden="true"></i>
+	                :
+	                    null
+	                }
+	                {p.source=="inst"?
+	                    <i className="fa fa-instagram" aria-hidden="true"></i>
+	                :
+	                    null
+	                }	   	                	                
+	                {p.name} 
+	                <span> <ListElement value={`${p.id},${p.source}`} disabled={this.state.comparar} click={(value)=>{this.comparison(value)}}/></span>
+	            </p>;
 		    });	
 
 		}
@@ -217,8 +233,10 @@ class Principal extends Component{
 			            </div>				            		            
 			        </div>
 			        <div id="dashboard">
-			        	<button onClick={()=>{this.cleanComparison()}}>Limpiar seleccion</button>
-			        	<button onClick={()=>{this.searchToCompare()}}>comparar</button>		
+			            <div id="botones">
+			            	<a className="boton" onClick={()=>{this.cleanComparison()}}>Limpiar seleccion</a>
+			        	    <a className="boton" onClick={()=>{this.searchToCompare()}}>comparar</a>	
+			            </div>	
 			            {this.renderResultados()}            			            			            
 			        </div>
 			    </div>
