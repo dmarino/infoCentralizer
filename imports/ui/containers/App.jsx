@@ -71,9 +71,7 @@ class App extends Component{
 			type:type, 
 			access_token:access_token_facebook
 		},(err, response)=>{
-			if(!err){
-			    this.setState({resultadosFacebook:response});
-			}
+			if(err) throw err;
 			tmpFacebook = response;
 			Meteor.call("InstagramRequestSearch", {
 				query:text,
