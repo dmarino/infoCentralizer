@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { Meteor } from 'meteor/meteor';
+import { Link } from 'react-router-dom';
 
 import {Historial} from "../../api/Historial.js";
 
@@ -16,14 +17,24 @@ class HistorialUsuario extends Component{
 	}
 
 	render(){
-		tmp = Historial.find({}).fetch();//this.props.usuario;
-		console.log(tmp);
+		tmp = Historial.findOne({
+			"user":this.props.usuario
+		});
 		if(tmp){
-			console.log(tmp);
+			search = tmp.search;
+			console.log(search);
+			return (
+				<div id="HistorialUsuario">
+					Historial de usuario! :D :D :D :D Tankiu Dani :3 <br/>
+					{search.map((e,k)=>{
+						return <p key={k}><Link to={`/dashboard/${e.content}/${e.type}`}> {e.content}/{e.type} </Link></p>
+					})}
+				</div>
+			);
 		}
-		return (
-			<div id="HistorialUsuario">
-				Holi! :D
+		return(
+			<div>
+				
 			</div>
 		);
 	}
