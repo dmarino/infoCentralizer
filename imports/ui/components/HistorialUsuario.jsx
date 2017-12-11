@@ -19,7 +19,7 @@ class HistorialUsuario extends Component{
 	render(){
 		tmp = Historial.findOne({
 			"user":this.props.usuario
-		});
+		}, { sort: { "search.date": -1 } });
 		if(tmp){
 			search = tmp.search;
 			console.log(search);

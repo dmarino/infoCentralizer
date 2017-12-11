@@ -83,16 +83,9 @@ class Principal extends Component{
 
 	searchToCompare(){
 		if(this.state.primerValor && this.state.segundoValor){
-			tmp = this.state.primerValor.split(",");
-			sourceOne = tmp[1];
-			idOne = tmp[0];
-			tmp = this.state.segundoValor.split(",");
-			sourceTwo = tmp[1];
-			idTwo = tmp[0];
-			console.log(sourceOne);
-			console.log(sourceTwo);
-			console.log(idOne);
-			console.log(idTwo);
+			
+			this.props.comparar(this.state.primerValor, this.state.segundoValor);
+			
 		}
 	}
 
@@ -138,7 +131,7 @@ class Principal extends Component{
 
 			return dataTransform.map((p,i)=>{
 	            return <p key={i}>{p.name} <span>
-	            	<ListElement value={`${p.id},${p.source}`} disabled={this.state.comparar} click={(value)=>{this.comparison(value)}}/>
+	            	<ListElement value={`${p.id},${p.source},${p.url},${p.name}`} disabled={this.state.comparar} click={(value)=>{this.comparison(value)}}/>
 	            </span></p>;
 		    });	
 
