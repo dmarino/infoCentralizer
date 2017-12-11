@@ -10,6 +10,7 @@ import Profile from "../components/Profile.jsx";
 import Search from "../components/Search.jsx";
 
 import NotFound from "./NotFound.jsx";
+import {Busquedas} from "../../api/Busquedas.js";
 
 class Principal extends Component{
 
@@ -22,7 +23,12 @@ class Principal extends Component{
 
 	onKeyPress(evt){
 		if(evt.key ==="Enter"){
-			this.props.buscar(evt.target.value, this.selected.value, this.latitud, this.longitud, this.radius);
+			if(evt.target.value === "")
+			{
+				alert("Must search something, just nothing can't be a good search");
+			}
+			else
+				this.props.buscar(evt.target.value, this.selected.value);
 		}
 	}
 
@@ -32,7 +38,7 @@ class Principal extends Component{
 
 
 	buscar(){
-	    this.props.buscar(this.state.alias, this.selected.value, this.latitud, this.longitud, this.radius);
+	    this.props.buscar(this.state.alias, this.selected.value);
 	}
 
 	renderTrendings(){
@@ -49,7 +55,6 @@ class Principal extends Component{
             return <span key={i}>{p.nombre}</span>;
 	    });		    
 	}
-
 
 	render(){
 		return (

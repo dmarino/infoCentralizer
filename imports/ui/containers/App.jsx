@@ -49,6 +49,9 @@ class App extends Component{
 		let access_token_instagram = null;
 		let access_token_twitter = null;
 		let private_token_twitter = null;
+		tmpFacebook = {};
+		tmpTwitter = {};
+		tmpInstagram = {};
 		if(Meteor.user() && Meteor.user().services){
 			if(Meteor.user().profile.nick){
 				Meteor.call("historial.insert", Meteor.user().profile.nick, text, type);
@@ -72,6 +75,7 @@ class App extends Component{
 			    this.setState({resultadosFacebook:response});
 			}
 			console.log(response);
+			tmpFacebook = response;
 		});
 		Meteor.call("InstagramRequestSearch", {
 			query:text,
@@ -81,17 +85,23 @@ class App extends Component{
 			if(access_token_instagram && text){
 				//manejo de la respuesta para buscar	
 			}
-			console.log(response);					
+			console.log(response);
+			tmpInstagram = response;
 		})
 		Meteor.call("TwitterRequestSearch",{	
 			query:text, 
 			access_token:access_token_twitter, 
 			access_private_token:private_token_twitter
 		},(err, response)=>{
-			if(err) throw err;	
-			console.log(response);					
+			if(err) throw err;
+			console.log(response);
+			tmpTwitter = response;
 		});
-
+		this.setState({
+			resultaadosFace:tmpFacebook,
+			resultadosInsta:tmpInstagram,
+			resultadosTwitter:tmpTwitter
+		})
 	}
 	actualizar(nick, pass, agregar){
 		if(agregar){

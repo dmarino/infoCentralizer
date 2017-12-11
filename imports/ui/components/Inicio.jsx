@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import d3 from 'd3'
-import { Switch, Route, Redirect} from 'react-router-dom'
+import { Switch, Route, Redirect, Link} from 'react-router-dom'
 
 import NotFound from "./NotFound.jsx";
 
@@ -105,7 +105,7 @@ class Inicio extends Component{
 			    <div id="InfoInicio">
 			        <h1>INFO-CENTRALIZER</h1>
 			        <p>This is an application that allows you to compare the results of a search on different Social Networks</p>
-			        <p>To begin click <a href="/dashboard">Next</a></p>	
+			        <p>To begin click <Link to="/dashboard">Next</Link></p>	
 			    </div>					    	    
 			</div>
 		);
