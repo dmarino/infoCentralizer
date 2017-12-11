@@ -24,7 +24,6 @@ class Inicio extends Component{
 	}
     
     draw(){
-
         var nodes = d3.range(200).map(function() { return {radius: Math.random() * 12 + 4}; });
         var r = nodes[0];
 

@@ -19,7 +19,7 @@ class App extends Component{
 		this.state={
 			usuario:null,
 			busqueda:false,
-	        resultaadosFace:[],
+	        resultadosFace:[],
 	        resultadosInsta:[],
 	        resultadosTwitter:[]			
 		};
@@ -68,7 +68,9 @@ class App extends Component{
 			type:type, 
 			access_token:access_token_facebook
 		},(err, response)=>{
-			if(err) throw err;
+			if(!err){
+			    this.setState({resultadosFacebook:response});
+			}
 			console.log(response);
 		});
 		Meteor.call("InstagramRequestSearch", {
@@ -79,16 +81,17 @@ class App extends Component{
 			if(access_token_instagram && text){
 				//manejo de la respuesta para buscar	
 			}
-			console.log(response);
+			console.log(response);					
 		})
 		Meteor.call("TwitterRequestSearch",{	
 			query:text, 
 			access_token:access_token_twitter, 
 			access_private_token:private_token_twitter
 		},(err, response)=>{
-			if(err) throw err;
-			console.log(response);
+			if(err) throw err;	
+			console.log(response);					
 		});
+
 	}
 	actualizar(nick, pass, agregar){
 		if(agregar){
@@ -123,7 +126,10 @@ class App extends Component{
 			<div className="App">
 				<Switch>
 					<Redirect exact from="/" to="/inicio"></Redirect>
-				    <Route path="/inicio" component={Inicio}/>					
+				    <Route path="/inicio" render={(routeProps)=>
+				    	<Inicio {...routeProps}
+				    	busquedas={this.props.busquedas}/>
+				    }/>					
 				    <Route path='/dashboard' render={(routeProps)=>
 				    	<Principal {...routeProps}
 				    	buscar = {(text, type)=>{this.buscar(text, type)}}
@@ -134,7 +140,10 @@ class App extends Component{
 				    		Meteor.user().services.instagram ? false : true
 				    	 : true }
 				    	verPerfil = {()=>{this.verPerfil()}}
-				    	busquedas={this.props.busquedas}/>
+				    	busquedas={this.props.busquedas}
+				    	resultadosFace={this.state.resultadosFace}
+				    	resultadosInsta={this.state.resultadosInsta}
+				    	resultadosTwitter={this.state.resultadosTwitter}/>
 				    }/>
 				    {Meteor.user()?
 				    	<Route path='/profile' render={(routeProps)=>
@@ -156,6 +165,6 @@ export default createContainer(()=>{
 	Meteor.subscribe("historial");
 	return{
 		usuario:Meteor.user(),
-		busquedas: Busquedas.find({}, { sort: { cantidad: -1 } }).fetch(),
+		busquedas: Busquedas.find({}, { sort: { numero: -1 } }).fetch(),
 	};
 },App);

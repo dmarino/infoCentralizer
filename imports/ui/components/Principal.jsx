@@ -16,10 +16,7 @@ class Principal extends Component{
 	constructor(props){
 		super(props);
 	    this.state={
-	        alias:"",
-	        resultaadosFace:[],
-	        resultadosInsta:[],
-	        resultadosTwitter:[]
+	        alias:""
 	    };
 	}
 
@@ -40,13 +37,17 @@ class Principal extends Component{
 
 	renderTrendings(){
         return this.props.busquedas.map((p,i)=>{
-            if(i<10){return <span key={i}>{p.nombre}</span>;}
+            if(i<10){return <span key={i}>{p.texto}</span>;}
             else{return null}
 	    });	
 	}
 
 	renderResultados(){
-
+		console.log(this.props.resultadosFace);
+        return this.props.resultadosFace.map((p,i)=>{
+            console.log("he");
+            return <span key={i}>{p.nombre}</span>;
+	    });		    
 	}
 
 
