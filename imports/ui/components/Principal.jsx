@@ -112,13 +112,16 @@ class Principal extends Component{
 				dataTransform.push(tmp);
 			});
 			dataTwt.map((e)=>{
-				tmp = {
-					"id":e.id,
-					"name":e.user.name,
-					"source":"twt",
-					"text":e.text
+				if(e.entities.urls.length > 0){
+					tmp = {
+						"id":e.id,
+						"name":e.user.name,
+						"source":"twt",
+						"text":e.text,
+						"url":e.entities.urls[0].expanded_url
+					}
+					dataTransform.push(tmp);
 				}
-				dataTransform.push(tmp);
 			});
 			dataInsta.map((e)=>{
 				tmp = {
