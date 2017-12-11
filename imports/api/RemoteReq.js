@@ -30,7 +30,7 @@ if(Meteor.isServer){
 				return HTTP.get(url);
 			}
 			else{
-				url = "https://www.instagram.com/web/search/topsearch/?context=blended&query=" + query;
+				url = "https://www.instagram.com/web/search/topsearch/?context=blended&query=" + query + "&count=" + 25;
 				return HTTP.get(url);
 			}
 		},
@@ -54,7 +54,7 @@ if(Meteor.isServer){
 					  timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
 					});
 			}
-			T.get('search/tweets', { q: 'banana since:2011-07-11', count: 2 }, function(err, data, response) {
+			T.get('search/tweets', { q: 'banana since:2011-07-11', count: 25 }, function(err, data, response) {
 				future.return({
 					err:err,
 					data:data

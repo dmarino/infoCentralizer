@@ -90,7 +90,7 @@ class App extends Component{
 					if(err) throw err;
 					tmpTwitter = response;
 					this.setState({
-						resultaadosFace:tmpFacebook,
+						resultadosFace:tmpFacebook,
 						resultadosInsta:tmpInstagram,
 						resultadosTwitter:tmpTwitter
 					});
@@ -127,9 +127,6 @@ class App extends Component{
 	}
 
 	render(){
-		console.log(this.state.resultaadosFace);
-		console.log(this.state.resultadosTwitter);
-		console.log(this.state.resultadosInsta);
 		return(
 			<div className="App">
 				<Switch>
@@ -149,6 +146,7 @@ class App extends Component{
 				    	 : true }
 				    	verPerfil = {()=>{this.verPerfil()}}
 				    	busquedas={this.props.busquedas}
+				    	busqueda={this.state.busqueda}
 				    	resultadosFace={this.state.resultadosFace}
 				    	resultadosInsta={this.state.resultadosInsta}
 				    	resultadosTwitter={this.state.resultadosTwitter}/>

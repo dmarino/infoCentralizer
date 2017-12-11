@@ -17,7 +17,8 @@ class Principal extends Component{
 	constructor(props){
 		super(props);
 	    this.state={
-	        alias:""
+	        alias:"",
+	        busqueda:false
 	    };
 	}
 
@@ -49,14 +50,80 @@ class Principal extends Component{
 	}
 
 	renderResultados(){
-		console.log(this.props.resultadosFace);
-        return this.props.resultadosFace.map((p,i)=>{
-            console.log("he");
-            return <span key={i}>{p.nombre}</span>;
-	    });		    
+		if(this.props.resultadosFace.data && this.props.resultadosInsta.data && this.props.resultadosTwitter.data){
+			dataFb = this.props.resultadosFace.data.data;
+			dataTwt = this.props.resultadosTwitter.data.statuses;
+			dataInsta = this.props.resultadosInsta.data.users;
+			dataTransform = [];
+			dataFb.map((e)=>{
+				tmp = {
+					"id":e.id,
+					"name":e.name,
+					"source":"fb"
+				}
+				dataTransform.push(tmp);
+			});
+			dataTwt.map((e)=>{
+				tmp = {
+					"id":e.id,
+					"name":e.user.name,
+					"source":"twt",
+					"text":e.text
+				}
+				dataTransform.push(tmp);
+			});
+			dataInsta.map((e)=>{
+				tmp = {
+					"id":e.user.pk,
+					"name":e.user.username,
+					"source":"inst",
+					"follower_count":e.user.follower_count
+				}
+				dataTransform.push(tmp);
+			});
+
+
+			console.log(dataFb);
+			console.log(dataTwt);
+			console.log(dataInsta);
+			console.log(dataTransform);
+			dataTransform = this.shuffle(dataTransform);
+			console.log(dataTransform);
+
+			return dataTransform.map((p,i)=>{
+	            return <p key={i}>{p.name}</p>;
+		    });	
+
+		}
 	}
 
-	render(){
+
+	shuffle(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
+
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+	}
+
+	render(){	
+		if(!this.props.busqueda && !this.state.busqueda && this.props.match.params.id){
+			this.setState({
+				busqueda:true
+			});
+			this.props.buscar(this.props.match.params.id, this.props.match.params.type);
+		}
 		return (
 			<div id="Principal">
 			    <MenuPrincipal 
@@ -104,8 +171,12 @@ class Principal extends Component{
 			        <div id="dashboard">		
 			            {this.renderResultados()}            			            			            
 			        </div>
-
 			    </div>
+			    <Switch>
+				    <Route exact path="/dashboard" component={componenteDummy1}/>
+				    <Route exact path="/dashboard/:id/:type" component={componenteDummy1}/>
+				    <Redirect to="/NotFound"/>
+				</Switch>
 			</div>
 		);
 	}
@@ -116,3 +187,6 @@ export default createContainer(()=>{
 	return{
 	};
 },Principal);
+
+
+var componenteDummy1=()=><div></div>;
