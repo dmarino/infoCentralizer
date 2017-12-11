@@ -222,17 +222,40 @@ a:hover{
 #dashboard{
   width: 97%;
   height: 80%;
-  overflow-y: auto;
-  background-color: #fff;
-  border-radius: 5px;
   margin-top: 2%;
   margin-bottom: 2%;
   padding: 2%;
 }
 
-#dashboard i{
+.lista{
+  background-color: #fff;
+  width: 40%;
+  height: 70%;
+  margin: 2%;
+  padding: 2%;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.listaL{
+  height: 70%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.listaL a{
+  text-decoration: none;
+  color: #000;
+}
+
+.listaL a:hover{
+  text-decoration: underline;
+}
+
+.lista i{
   margin-right: 2%;
 }
+
 
 
 #profile{

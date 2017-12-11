@@ -6,9 +6,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Inicio from "../components/Inicio.jsx";
 import Principal from "../components/Principal.jsx";
 import Profile from "../components/Profile.jsx";
-import Search from "../components/Search.jsx";
 import NotFound from "../components/NotFound.jsx";
-
 
 import {Busquedas} from "../../api/Busquedas.js";
 import {Historial} from "../../api/Historial.js";
@@ -126,6 +124,10 @@ class App extends Component{
 			this.props.history.push("/profile");
 	}
 
+	comparar(primerParam, segundoParam){
+		this.props.history.push("/compare/" + primerParam + "/" + segundoParam);
+	}
+
 	render(){
 		return(
 			<div className="App">
@@ -147,6 +149,7 @@ class App extends Component{
 				    	verPerfil = {()=>{this.verPerfil()}}
 				    	busquedas={this.props.busquedas}
 				    	busqueda={this.state.busqueda}
+				    	comparar={(primerParam, segundoParam)=>{this.comparar(primerParam, segundoParam)}}
 				    	resultadosFace={this.state.resultadosFace}
 				    	resultadosInsta={this.state.resultadosInsta}
 				    	resultadosTwitter={this.state.resultadosTwitter}/>

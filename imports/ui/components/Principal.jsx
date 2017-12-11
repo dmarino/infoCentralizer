@@ -5,12 +5,10 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Switch, Route, Redirect} from 'react-router-dom';
 
 import MenuPrincipal from "./MenuPrincipal.jsx";
-import Opcion from "./Opcion.jsx";
 import Profile from "../components/Profile.jsx";
-import Search from "../components/Search.jsx";
 
 import NotFound from "./NotFound.jsx";
-import ListElement from "./ListElement.jsx";
+import Lista from "./Lista.jsx";
 import {Busquedas} from "../../api/Busquedas.js";
 
 class Principal extends Component{
@@ -53,6 +51,7 @@ class Principal extends Component{
             else{return null}
 	    });	
 	}
+
 	comparison(value){
 		tmp = this.state.number;
 		tmp = tmp + 1;
@@ -83,80 +82,58 @@ class Principal extends Component{
 
 	searchToCompare(){
 		if(this.state.primerValor && this.state.segundoValor){
-			tmp = this.state.primerValor.split(",");
-			sourceOne = tmp[1];
-			idOne = tmp[0];
-			tmp = this.state.segundoValor.split(",");
-			sourceTwo = tmp[1];
-			idTwo = tmp[0];
-			console.log(sourceOne);
-			console.log(sourceTwo);
-			console.log(idOne);
-			console.log(idTwo);
+			
+			this.props.comparar(this.state.primerValor, this.state.segundoValor);
+			
 		}
 	}
 
 	renderResultados(){
 		if(this.props.resultadosFace.data && this.props.resultadosInsta.data && this.props.resultadosTwitter.data){
-			dataFb = this.props.resultadosFace.data.data;
-			dataTwt = this.props.resultadosTwitter.data.statuses;
-			dataInsta = this.props.resultadosInsta.data.users;
-			dataTransform = [];
-			console.log(this.props.resultadosTwitter);
-			dataFb.map((e)=>{
-				tmp = {
+
+		    dataTransform = [];
+			
+			dataFB = this.props.resultadosFace.data.data.map((e)=>{
+			    temp = "https://www.facebook.com/" + e.id;
+				return {
 					"id":e.id,
 					"name":e.name,
-					"source":"fb"
+					"source":"fb",
+					"url": temp
 				}
-				dataTransform.push(tmp);
 			});
-			dataTwt.map((e)=>{
+
+			dataTransform.push({nombre:"Facebook", resultados:dataFB});
+
+			dataTwt = this.props.resultadosTwitter.data.statuses.map((e)=>{
 				if(e.entities.urls.length > 0){
-				    console.log(e);
-					tmp = {
+					return {
 						"id":e.id,
 						"name":e.text,
 						"source":"twt",
 						"text":e.text,
 						"url":e.entities.urls[0].expanded_url
 					}
-					dataTransform.push(tmp);
 				}
 			});
-			dataInsta.map((e)=>{
-				tmp = {
+
+			dataTransform.push({nombre:"Twitter", resultados:dataTwt});	
+					
+			dataInsta = this.props.resultadosInsta.data.users.map((e)=>{
+			    temp = "https://www.instagram.com/" + e.user.username;
+				return {
 					"id":e.user.pk,
 					"name":e.user.username,
 					"source":"inst",
-					"follower_count":e.user.follower_count
+					"follower_count":e.user.follower_count,
+					"url": temp
 				}
-				dataTransform.push(tmp);
 			});
 
-			//dataTransform = this.shuffle(dataTransform);
-			console.log(dataTransform);
+			dataTransform.push({nombre:"Instagram", resultados:dataInsta});				
 
 			return dataTransform.map((p,i)=>{
-	            return <p key={i}> 
-	                {p.source=="fb"?
-	                    <i className="fa fa-facebook-official" aria-hidden="true"></i>
-	                :
-	                    null
-	                }
-	                {p.source=="twt"?
-	                    <i className="fa fa-twitter" aria-hidden="true"></i>
-	                :
-	                    null
-	                }
-	                {p.source=="inst"?
-	                    <i className="fa fa-instagram" aria-hidden="true"></i>
-	                :
-	                    null
-	                }	   	                	                
-	                {p.name} 
-	                <span> <ListElement value={`${p.id},${p.source}`} disabled={this.state.comparar} click={(value)=>{this.comparison(value)}}/></span>
-	            </p>;
+	            return <Lista key={i} valor={p}/>;
 		    });	
 
 		}
@@ -233,11 +210,7 @@ class Principal extends Component{
 			                </div>			                 
 			            </div>				            		            
 			        </div>
-			        <div id="dashboard">
-			            <div id="botones">
-			            	<a className="boton" onClick={()=>{this.cleanComparison()}}>Limpiar seleccion</a>
-			        	    <a className="boton" onClick={()=>{this.searchToCompare()}}>comparar</a>	
-			            </div>	
+			        <div id="dashboard">	
 			            {this.renderResultados()}            			            			            
 			        </div>
 			    </div>
