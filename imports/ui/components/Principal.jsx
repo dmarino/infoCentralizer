@@ -12,16 +12,16 @@ import Lista from "./Lista.jsx";
 import {Busquedas} from "../../api/Busquedas.js";
 
 class Principal extends Component{
-
+	// Pueden configurar un linter para que no se les pase la indentacion.
 	constructor(props){
-		super(props);
+	    super(props);
 	    this.state={
 	        alias:"",
 	        busqueda:false,
 	        comparar:false,
 	        number:0,
-			primerValor:null,
-			segundoValor:null
+		primerValor:null,
+		segundoValor:null
 	    };
 	}
 

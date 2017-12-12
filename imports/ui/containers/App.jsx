@@ -14,6 +14,7 @@ import {Historial} from "../../api/Historial.js";
 class App extends Component{
 	constructor(props){
 		super(props);
+		// Por props te debe estar llegando el usuario de meteor. No hay necesidad de redefinirlo en el state.
 		this.state={
 			usuario:null,
 			busqueda:false,
@@ -24,6 +25,7 @@ class App extends Component{
 	}
 
 	componentDidMount(){
+		// Asi te ahorras hacer esto aqui.
 		if(Meteor.user() !== this.state.usuario){
 			this.setState({
 				usuario:Meteor.user()
@@ -32,8 +34,10 @@ class App extends Component{
 	}
 
 	buscar(text, type){
+		// ES6 te deje hacer escribir esto como: `/dashboard/${text}/type`
 		texto = "/dashboard/" + text + "/" + type;
 		if(this.props.location.pathname !== texto){
+			// Los props deberian ser inmutables!
 			this.props.history.push(texto);
 			this.setState({
 				busqueda:true
