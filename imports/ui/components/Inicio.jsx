@@ -5,6 +5,7 @@ import { Switch, Route, Redirect, Link} from 'react-router-dom'
 
 import NotFound from "./NotFound.jsx";
 
+// Chevere que usaron d3!
 class Inicio extends Component{
 
 	constructor(props){
